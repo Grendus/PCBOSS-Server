@@ -1,0 +1,8 @@
+application: pcbosshost
+version: 0-1-alpha
+runtime: python27
+handlers:
+ - url: /.*
+   script: PCBOSSMain.py
+api_version: 1
+threadsafe: false

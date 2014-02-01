@@ -3,6 +3,7 @@ import tornado.wsgi
 import tornado.web
 import os
 import Handlers
+import SystemRequestHandler
 
 def application():
     handlers=[(r"/", Handlers.MainHandler),
@@ -11,7 +12,8 @@ def application():
             (r"/UploadFile", Handlers.UploadHandler),
             (r"/Index", Handlers.IndexHandler),
             (r"/About", Handlers.AboutHandler),
-            (r"/Profile", Handlers.ProfileHandler)]
+            (r"/Profile", Handlers.ProfileHandler),
+            (r"/System", SystemRequestHandler.SystemRequestHandler)]
 
     settings=dict(template_path=os.path.join(os.path.dirname(__file__), "templates"),
                 static_path=os.path.join(os.path.dirname(__file__), "static"),

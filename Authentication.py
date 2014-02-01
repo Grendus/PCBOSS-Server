@@ -1,8 +1,15 @@
 import Encryption
 import Database
 
+"""
+Since we only expect to have a few users at any given time, we can cache the valid tokens
+and save on datastore access.
 
-#since we only expect to have a few users at any given time, we can cache the valid tokens and save on datastore access
+This does mean that every time the server crashes everyone will have to log back in. Again,
+given that we expect to have few users online at any given point this shouldn't be an issue.
+"""
+
+
 #todo: tokens should expire at some point. Valid workaround involves restarting the server daily
 validTokens = {}
 
@@ -29,4 +36,4 @@ def authViewRequest(token):
 def authUpload(ID, CADFile, filedesc):
     #todo: figure out how to authenticate the file
     encFile = Encryption.encryptFile(CADFile)
-    Database.storeFile(ID, encFile, filedesc)
+    Database.storeFile(validTokens[ID], encFile, filedesc)

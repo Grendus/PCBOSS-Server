@@ -19,6 +19,7 @@ class CADFile(ndb.Model):
     time = ndb.DateTimeProperty(auto_now_add=True)
     description = ndb.TextProperty()
     CADFile = ndb.BlobProperty()
+    status = ndb.StringProperty()
     
 #checks the validity of every username/password combo
 def isValid(uname, pwd):
@@ -30,12 +31,21 @@ def getJobs(uname):
 
 #stores a file in the datastore
 def storeFile(ID, encFile, filedesc):
-    pass
+    uploadedFile = CADFile(submitter_name=ID,
+                           filename=encFile[0]['filename'],
+                           description=filedesc,
+                           status="Pending")
+    uploadedFile.CADFile = ndb.Blob(encFile[0]['file'])
+    uploadedFile.put()
 
 #adds a user to the system; should only be done by the home system
 def addUser(email, encpwd, fname, lname):
-    newUser = user(email_address=email,
-                   password=encpwd,
-                   first_name=fname,
-                   last_name=lname)
-    newUser.put()
+    try:
+        newUser = user(email_address=email,
+                       password=encpwd,
+                       first_name=fname,
+                       last_name=lname)
+        newUser.put()
+    except:
+        return False
+    return True

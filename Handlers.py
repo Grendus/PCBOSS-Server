@@ -20,8 +20,8 @@ class ViewHistoryHandler(tornado.web.RequestHandler):
     def get(self):
         sessionID = self.get_cookie('sessionID')
         if WebEventHandler.validateID(sessionID):
-            jobList = WebEventHandler.requestJobHistory(sessionID)
-            self.render("history.html", JobHistory=jobList)
+            joblist = WebEventHandler.requestJobHistory(sessionID)
+            self.render("history.html", joblist=joblist, username=WebEventHandler.getUsername(self.get_cookie('sessionID')))
         else:
             self.redirect("/")
 
@@ -29,7 +29,7 @@ class ViewHistoryHandler(tornado.web.RequestHandler):
 class UploadHandler(tornado.web.RequestHandler):
     def get(self):
         if WebEventHandler.validateID(self.get_cookie('sessionID')):
-            self.render('upload.html')
+            self.render('upload.html', username=WebEventHandler.getUsername(self.get_cookie('sessionID')))
         else:
             self.redirect('/')
 
@@ -47,7 +47,7 @@ class IndexHandler(tornado.web.RequestHandler):
     def get(self):
         sessionID = self.get_cookie('sessionID')
         if WebEventHandler.validateID(sessionID):
-            self.render('index.html')
+            self.render('index.html', username=WebEventHandler.getUsername(self.get_cookie('sessionID')))
         else:
             self.redirect('/')
 
@@ -55,7 +55,7 @@ class AboutHandler(tornado.web.RequestHandler):
     def get(self):
         sessionID = self.get_cookie('sessionID')
         if WebEventHandler.validateID(sessionID):
-            self.render('about.html')
+            self.render('about.html', username=WebEventHandler.getUsername(self.get_cookie('sessionID')))
         else:
             self.redirect('/')
 
@@ -63,6 +63,6 @@ class ProfileHandler(tornado.web.RequestHandler):
     def get(self):
         sessionID = self.get_cookie('sessionID')
         if WebEventHandler.validateID(sessionID):
-            self.render('profile.html')
+            self.render('profile.html', username=WebEventHandler.getUsername(self.get_cookie('sessionID')))
         else:
             self.redirect('/')

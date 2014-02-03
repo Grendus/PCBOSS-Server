@@ -15,3 +15,6 @@ def saveFile(ID, CADFile, filedesc):
     except:
         return False
     return True
+
+def getUsername(authToken):
+    return Authentication.getUser(authToken)

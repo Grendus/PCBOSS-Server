@@ -36,7 +36,7 @@
 
             <ul class="nav navbar-top-links navbar-right">
                 <li>
-					<a href="/Profile"><i class="fa fa-user"></i> Logged in as <strong>Trinh Nguyen</strong></a>
+					<a href="/Profile"><i class="fa fa-user"></i> Logged in as <strong>{{username}}</strong></a>
                 </li>
 				<li>
 					<a href="#"><i class="fa fa-sign-out"></i> Logout</a>
@@ -73,55 +73,22 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Order History</h1>
-					<table class="table table-hover table-bordered table-condensed">
-						<th>Time</th>
-						<th>File name</th>
-						<th>Description</th>
-						<th>Status</th>
-						<th>Actions</th>
-						<tr>
-							<td>2014-01-22 11:50:22</td>
-							<td>My-Circuit-Board.cad</td>
-							<td>This is my awesome circuit board for my project</td>
-							<td><span class="label label-default">Pending</span></td>
-							<td><a href="#"><i class="fa fa-ban"></i> Cancel</a></td>
-						</tr>
-						<tr>
-							<td>2014-01-22 11:50:22</td>
-							<td>My-Circuit-Board.cad</td>
-							<td>This is my awesome circuit board for my project</td>
-							<td><span class="label label-default">Pending</span></td>
-							<td><a href="#"><i class="fa fa-ban"></i> Cancel</a></td>
-						</tr>
-						<tr>
-							<td>2014-01-22 11:50:22</td>
-							<td>My-Circuit-Board.cad</td>
-							<td>This is my awesome circuit board for my project</td>
-							<td><span class="label label-success">Complete</td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>2014-01-22 11:50:22</td>
-							<td>My-Circuit-Board.cad</td>
-							<td>This is my awesome circuit board for my project</td>
-							<td><span class="label label-warning">Cancelled</span></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>2014-01-22 11:50:22</td>
-							<td>My-Circuit-Board.cad</td>
-							<td>This is my awesome circuit board for my project</td>
-							<td><span class="label label-danger">Failed</span></td>
-							<td>Size not supported</td>
-						</tr>
-						<tr>
-							<td>2014-01-22 11:50:22</td>
-							<td>My-Circuit-Board.cad</td>
-							<td>This is my awesome circuit board for my project</td>
-							<td><span class="label label-success">Complete</span></td>
-							<td></td>
-						</tr>
-					</table>
+                    <table class="table table-hover table-bordered table-condensed">
+                        <th>Time</th>
+                        <th>File name</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                        {% for job in joblist %}
+                        <tr>
+                            <td>{{job['time'].date()}} {{job['time'].time().hour-6}}:{{job['time'].time().minute}}:{{job['time'].time().second}}</td>
+                            <td>{{job['name']}}</td>
+                            <td>{{job['description']}}</td>
+                            <td>{{job['status']}}</td>
+                            <td><a href="#"><i class="fa fa-ban"></i> Cancel</a></td>
+                        </tr>
+                        {%end %}
+                    </table>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>

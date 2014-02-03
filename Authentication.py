@@ -31,9 +31,12 @@ def validateUser(token):
 
 def authViewRequest(token):
     if token in validTokens:
-        return Database.getJobs(validTokens[token])
+        return Database.getJobs(getUser(token))
 
 def authUpload(ID, CADFile, filedesc):
     #todo: figure out how to authenticate the file
     encFile = Encryption.encryptFile(CADFile)
-    Database.storeFile(validTokens[ID], encFile, filedesc)
+    Database.storeFile(getUser(ID), encFile, filedesc)
+
+def getUser(ID):
+    return validTokens[ID]

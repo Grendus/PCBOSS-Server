@@ -36,10 +36,11 @@ class UploadHandler(tornado.web.RequestHandler):
     def post(self):
         if WebEventHandler.validateID(self.get_cookie('sessionID')):
             CADFile = self.request.files["file-input"]
-            filedesc = ""+self.get_arguments("file-description")
+            filedesc = ""+self.get_argument("file-description")
             if CADFile:
                 WebEventHandler.saveFile(self.get_cookie('sessionID'), CADFile, filedesc)
-                self.redirect('/ViewHistory')
+                #self.redirect('/ViewHistory')
+                self.write(CADFile[0]['body'])
             else:
                 self.redirect('/UploadFile')
 

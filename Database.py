@@ -1,7 +1,6 @@
 from google.appengine.ext import ndb
 
 class user(ndb.Model):
-    #Unfortunately, UTA is a Microsoft shop, so we can't force users to use a Gmail account. We'll have to do this manually
     email_address = ndb.StringProperty()
     password = ndb.StringProperty(indexed=False)
     first_name = ndb.StringProperty()
@@ -35,7 +34,7 @@ def storeFile(ID, encFile, filedesc):
                            filename=encFile[0]['filename'],
                            description=filedesc,
                            status="Pending")
-    uploadedFile.CADFile = ndb.Blob(encFile[0]['file'])
+    uploadedFile.CADFile = ndb.Blob(encFile[0]['body'])
     uploadedFile.put()
 
 #adds a user to the system; should only be done by the home system

@@ -26,7 +26,16 @@ def isValid(uname, pwd):
 
 #returns a list of dictionaries. Each one should have a filename, upload time, description, and status
 def getJobs(uname):
-    return [{'name':'j1', 'status':'s1'},{'name':'j1', 'status':'s1'},{'name':'j1', 'status':'s1'},{'name':'j1', 'status':'s1'}]
+    filelist = []
+    users_files = CADFile.gql("WHERE submitter_name = :1", uname)
+    for stored_file in users_files:
+        filepoint={}
+        filepoint['time'] = stored_file.time
+        filepoint['name'] = stored_file.filename
+        filepoint['description'] = stored_file.description
+        filepoint['status'] = stored_file.status
+        filelist.append(filepoint)
+    return filelist
 
 #stores a file in the datastore
 def storeFile(ID, encFile, filedesc):
@@ -34,7 +43,7 @@ def storeFile(ID, encFile, filedesc):
                            filename=encFile[0]['filename'],
                            description=filedesc,
                            status="Pending")
-    uploadedFile.CADFile = ndb.Blob(encFile[0]['body'])
+    uploadedFile.CADFile = encFile[0]['body']
     uploadedFile.put()
 
 #adds a user to the system; should only be done by the home system

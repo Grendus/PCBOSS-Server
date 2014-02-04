@@ -37,6 +37,13 @@ def getJobs(uname):
         filelist.append(filepoint)
     return filelist
 
+def getUserInfo(uname):
+    userData = user.gql("WHERE email_address = :1", uname).get()
+    userDict = {"email":userData.email_address,
+                "fname":userData.first_name,
+                "lname":userData.last_name}
+    return userDict
+
 #stores a file in the datastore
 def storeFile(ID, encFile, filedesc):
     uploadedFile = CADFile(submitter_name=ID,
@@ -57,3 +64,11 @@ def addUser(email, encpwd, fname, lname):
     except:
         return False
     return True
+
+def updateAccount(email, fname, lname, pword=False):
+    selectedUser = user.gql("WHERE email_address = :1", email).get()
+    if pword:
+        selectedUser.password = pword
+    selectedUser.first_name = fname
+    selectedUser.last_name = lname
+    selectedUser.put()

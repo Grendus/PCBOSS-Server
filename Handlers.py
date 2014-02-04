@@ -63,6 +63,28 @@ class ProfileHandler(tornado.web.RequestHandler):
     def get(self):
         sessionID = self.get_cookie('sessionID')
         if WebEventHandler.validateID(sessionID):
-            self.render('profile.html', username=WebEventHandler.getUsername(self.get_cookie('sessionID')))
+            self.render('profile.html',
+                        username=WebEventHandler.getUsername(self.get_cookie('sessionID')),
+                        userinfo=WebEventHandler.getUserInfo(self.get_cookie('sessionID')))
         else:
             self.redirect('/')
+    def post(self):
+        sessionID = self.get_cookie('sessionID')
+        if WebEventHandler.validateID(sessionID):
+            try:
+                fname = self.get_argument('first-name')
+                lname = self.get_argument('last-name')
+                try:
+                    pwd1 = self.get_argument('password')
+                    pwd2 = self.get_argument('confirm-password')
+                    WebEventHandler.updateAccount(sessionID, fname, lname, pwd1, pwd2)
+                except NameError:
+                    WebEventHandler.updateAccount(sessionID, fname, lname)
+            finally:
+                self.redirect("/Index")
+
+class LogoutHandler(tornado.web.RequestHandler):
+    def get(self):
+        sessionID = self.get_cookie('sessionID')
+        WebEventHandler.endSession(sessionID)
+        self.redirect('/')

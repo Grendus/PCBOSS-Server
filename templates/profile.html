@@ -39,7 +39,7 @@
 					<a href="Profile"><i class="fa fa-user"></i> Logged in as <strong>{{username}}</strong></a>
                 </li>
 				<li>
-					<a href="#"><i class="fa fa-sign-out"></i> Logout</a>
+					<a href="/Logout"><i class="fa fa-sign-out"></i> Logout</a>
 				</li>
             </ul>
             <!-- /.navbar-top-links -->
@@ -77,27 +77,27 @@
 					  <div class="form-group">
 						<label for="email" class="col-sm-2 control-label">Email Address</label>
 						<div class="col-sm-8">
-						  <input type="text" id="email" class="form-control" value="trinh.nguyen45@mavs.uta.edu" disabled>
+						  <input type="text" id="email" class="form-control" value="{{userinfo["email"]}}" disabled>
 						</div>
 					  </div>
 					  <div class="form-group">
 						<label for="first-name" class="col-sm-2 control-label">First Name</label>
 						<div class="col-sm-3">
-						  <input type="text" id="first-name" class="form-control" value="Trinh">
+						  <input type="text" id="first-name" name="first-name" class="form-control" value="{{userinfo["fname"]}}">
 						</div>
 						<label for="last-name" class="col-sm-2 control-label">Last Name</label>
 						<div class="col-sm-3">
-						  <input type="text" id="last-name" class="form-control" value="Nguyen">
+						  <input type="text" id="last-name" name="last-name" class="form-control" value="{{userinfo["lname"]}}">
 						</div>
 					  </div>
 					  <div class="form-group">
 						<label for="password" class="col-sm-2 control-label">New Password</label>
 						<div class="col-sm-3">
-						  <input type="password" id="password" class="form-control">
+						  <input type="password" id="password" name="password" class="form-control">
 						</div>
 						<label for="confirm-password" class="col-sm-2 control-label">Confirm Password</label>
 						<div class="col-sm-3">
-						  <input type="password" id="confirm-password" class="form-control">
+						  <input type="password" id="confirm-password" name="confirm-password" class="form-control">
 						</div>
 					  </div>
 					  <div class="form-group col-sm-6" style="text-align: right;">

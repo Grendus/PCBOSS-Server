@@ -13,6 +13,7 @@ def application():
             (r"/Index", Handlers.IndexHandler),
             (r"/About", Handlers.AboutHandler),
             (r"/Profile", Handlers.ProfileHandler),
+            (r"/Logout", Handlers.LogoutHandler),
             (r"/System", SystemRequestHandler.SystemRequestHandler)]
 
     settings=dict(template_path=os.path.join(os.path.dirname(__file__), "templates"),

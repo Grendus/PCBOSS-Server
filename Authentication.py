@@ -38,5 +38,19 @@ def authUpload(ID, CADFile, filedesc):
     encFile = Encryption.encryptFile(CADFile)
     Database.storeFile(getUser(ID), encFile, filedesc)
 
-def getUser(ID):
-    return validTokens[ID]
+def getUser(token):
+    return validTokens[token]
+
+def getUserInfo(token):
+    return Database.getUserInfo(getUser(token))
+
+def updateAccount(token, fname, lname, pwd=False):
+    if pwd:
+        pwdHash = Encryption.pwdHash(pwd)
+        Database.updateAccount(getUser(token), fname, lname, pwdHash)
+    else:
+        Database.updateAccount(getUser(token), fname, lname)
+
+def endSession(token):
+    if token in validTokens:
+        del validTokens[token]

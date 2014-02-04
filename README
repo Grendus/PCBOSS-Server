@@ -1,0 +1,5 @@
+Printed Circuit Board Ordering Service System
+
+This is the software for running a server based on the Tornado micro-framework (tornadoweb.org) hosted on the Google App Engine.
+
+Deployment is simple, upload to the Google App Engine via the Python installer in Google's Python Webkit.

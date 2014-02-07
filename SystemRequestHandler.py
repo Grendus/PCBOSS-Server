@@ -34,18 +34,20 @@ class SystemRequestHandler(tornado.web.RequestHandler):
                 else:
                     self.write("Failure")
             elif requestType == "list_jobs":
-                self.write(Database.listJobs())
+                self.write(str(Database.listJobs()))
             elif requestType == "request_file":
-                filenum = int(self.get_argument("file_number"))
-                self.write(Database.getJob(filenum))
+                filenum = self.get_argument("file_number")
+                self.write(str(Database.getJob(filenum).CADFile))
             elif requestType == "update_job_status":
                 filenum = int(self.get_argument("file_number"))
                 status = self.get_argument("status")
                 Database.updateStatus(filenum, status)
             elif requestType == "recent_file":
-                self.write(Database.mostRecentFile())
+                self.write(str(Database.mostRecentFile()))
+            elif requestType == "recent_file_timestamp":
+                self.write(str(Database.mostRecentTimestamp()))
             elif requestType == "get_users":
-                self.write(Database.listUsers())
+                self.write(str(Database.listUsers()))
             elif requestType == "edit_user":
                 email = self.get_argument("email")
                 fname = self.get_argument("first_name")

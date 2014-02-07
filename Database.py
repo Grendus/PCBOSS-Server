@@ -74,10 +74,36 @@ def updateAccount(email, fname, lname, pword=False):
     selectedUser.put()
 
 def listJobs():
-    pass
+    jobs = CADFile.gql('')
+    joblist = []
+    for job in jobs:
+        joblist.append({"user_name": job.submitter_name,
+                        "id": job.key,
+                        "file_name": job.filename,
+                        "time": job.time,
+                        "status": job.status})
+    return joblist
 
 def getJob(filenum):
-    pass
+    #todo: fix the GQL injection vulnerability here. Probably safe, it's behind an authorization wall, but still
+    job = CADFile.gql("WHERE __key__ = KEY('CADFile', "+str(filenum)+")").get()
+    return job
 
 def updateStatus(filenum, status):
-    pass
+    job = getJob(filenum)
+    job.status = status
+    job.put()
+
+def mostRecentFile():
+    job = CADFile.gql("ORDER BY time DESC LIMIT 1").get()
+    return job
+
+def mostRecentTimestamp():
+    return mostRecentFile().time
+
+def listUsers():
+    users = user.gql("")
+    userlist = []
+    for userinfo in users:
+        userlist.append(userinfo.email_address)
+    return userlist

@@ -72,3 +72,12 @@ def updateAccount(email, fname, lname, pword=False):
     selectedUser.first_name = fname
     selectedUser.last_name = lname
     selectedUser.put()
+
+def listJobs():
+    pass
+
+def getJob(filenum):
+    pass
+
+def updateStatus(filenum, status):
+    pass

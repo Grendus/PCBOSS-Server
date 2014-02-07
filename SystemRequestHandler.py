@@ -8,7 +8,8 @@ the entry point.
 
 All requests must pass the following values:
 auth = the authorization code todo: replace the easy to type authorization code with a hash
-type = the type of request. Current accepted methods are "add_user".
+type = the type of request. Current accepted methods are "add_user", "list_jobs",
+"request_files", "update_job_status", "recent_files", "get_users", "edit_user".
 
 Requests of type "add_user" must pass the following values:
 email = the email address or user name of the user being registered. The system will try
@@ -32,6 +33,25 @@ class SystemRequestHandler(tornado.web.RequestHandler):
                     self.write("Success")
                 else:
                     self.write("Failure")
+            elif requestType == "list_jobs":
+                self.write(Database.listJobs())
+            elif requestType == "request_file":
+                filenum = int(self.get_argument("file_number"))
+                self.write(Database.getJob(filenum))
+            elif requestType == "update_job_status":
+                filenum = int(self.get_argument("file_number"))
+                status = self.get_argument("status")
+                Database.updateStatus(filenum, status)
+            elif requestType == "recent_file":
+                self.write(Database.mostRecentFile())
+            elif requestType == "get_users":
+                self.write(Database.listUsers())
+            elif requestType == "edit_user":
+                email = self.get_argument("email")
+                fname = self.get_argument("first_name")
+                lname = self.get_argument("last_name")
+                pword = self.get_argument("password")
+                Database.updateAccount(email, fname, lname, pword)
         else:
             self.write("Error: Unrecognized Request")
 

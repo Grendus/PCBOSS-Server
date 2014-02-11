@@ -18,7 +18,40 @@ email = the email address or user name of the user being registered. The system 
 password = the desired password todo: hash the passwords
 first_name = the users first name. Something has to be passed, even if it's a dummy value.
 last_name = the users last name. Something has to be passed, even if it's a dummy value.
+
+Requests of the type "list_jobs" do not need to pass any additional data.
+
+Requests of the type "request_file" must pass the following values:
+file_number = the number of a file on the server.
+
+Requests of the type "update_job_status" must pass the following values:
+file_number = the number of a file on th server.
+status = the updated status value of the file
+
+Requests of the type "recent_file" do not need to pass any additional data.
+
+Requests of the type "recent_fie_timestamp" do not need to pass any additional data.
+
+Requests of the type "get_users" do not need to send any additional data.
+
+Requests of the type "update_user" must pass the following values:
+email = the email address or user name of the user being registered. The system will try
+    to alert the user at this address, so if it isn't a valid email address the user will
+    not be alerted.
+password = the desired password todo: hash the passwords
+first_name = the users first name. Something has to be passed, even if it's a dummy value.
+last_name = the users last name. Something has to be passed, even if it's a dummy value.
 """
+
+authCode = "PCBOSS"
+addUserRequest = "add_user"
+listJobsRequest = "list_jobs"
+requestFileRequest = "request_file"
+updateJobStatusRequest = "update_job_status"
+recentFileRequest = "recent_file"
+recentFileTimestampRequest = "recent_file_timestamp"
+getUsersRequest = "get_users"
+editUsersRequest = "edit_user"
 
 class SystemRequestHandler(tornado.web.RequestHandler):
     def post(self):

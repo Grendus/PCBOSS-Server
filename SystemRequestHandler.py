@@ -70,7 +70,7 @@ class SystemRequestHandler(tornado.web.RequestHandler):
                 self.write(str(Database.listJobs()))
             elif requestType == "request_file":
                 filenum = self.get_argument("file_number")
-                self.write(str(Database.getJob(filenum).CADFile))
+                self.write(str(Database.getJob(filenum)))
             elif requestType == "update_job_status":
                 filenum = int(self.get_argument("file_number"))
                 status = self.get_argument("status")

@@ -19,6 +19,14 @@ class CADFile(ndb.Model):
     description = ndb.TextProperty()
     CADFile = ndb.BlobProperty()
     status = ndb.StringProperty()
+
+    def export(self):
+        data = {"submitter_name":self.submitter_name,
+                "filename":self.filename,
+                "description":self.description,
+                "CADFile":self.CADFile,
+                "status":self.status}
+        return data
     
 #checks the validity of every username/password combo
 def isValid(uname, pwd):
@@ -85,9 +93,9 @@ def listJobs():
     return joblist
 
 def getJob(filenum):
-    #todo: fix the GQL injection vulnerability here. Probably safe, it's behind an authorization wall, but still
+    #todo: fix the GQL injection vulnerability here. Probably safe, it's behind an authorization wall, but still bad form to leave it there
     job = CADFile.gql("WHERE __key__ = KEY('CADFile', "+str(filenum)+")").get()
-    return job
+    return job.export()
 
 def updateStatus(filenum, status):
     job = getJob(filenum)
@@ -96,7 +104,7 @@ def updateStatus(filenum, status):
 
 def mostRecentFile():
     job = CADFile.gql("ORDER BY time DESC LIMIT 1").get()
-    return job
+    return job.export()
 
 def mostRecentTimestamp():
     return mostRecentFile().time

@@ -23,6 +23,8 @@ class CADFile(ndb.Model):
     def export(self):
         data = {"submitter_name":self.submitter_name,
                 "filename":self.filename,
+                "key":str(self.key.id()),
+                "time":self.time.strftime("%Y %m %d %H:%M:%S"),
                 "description":self.description,
                 "CADFile":self.CADFile,
                 "status":self.status}
@@ -85,11 +87,9 @@ def listJobs():
     jobs = CADFile.gql('')
     joblist = []
     for job in jobs:
-        joblist.append({"user_name": job.submitter_name,
-                        "id": job.key,
-                        "file_name": job.filename,
-                        "time": job.time,
-                        "status": job.status})
+        jobdict = job.export()
+        del jobdict["CADFile"]
+        joblist.append(jobdict)
     return joblist
 
 def getJob(filenum):

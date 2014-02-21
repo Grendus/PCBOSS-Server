@@ -107,11 +107,11 @@ def mostRecentFile():
     return job.export()
 
 def mostRecentTimestamp():
-    return mostRecentFile().time
+    return mostRecentFile()["time"]
 
 def listUsers():
     users = user.gql("")
     userlist = []
     for userinfo in users:
-        userlist.append(userinfo.email_address)
+        userlist.append((userinfo.email_address, userinfo.first_name, userinfo.last_name))
     return userlist

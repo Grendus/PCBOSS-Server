@@ -98,7 +98,7 @@ def getJob(filenum):
     return job.export()
 
 def updateStatus(filenum, status):
-    job = getJob(filenum)
+    job = CADFile.gql("WHERE __key__ = KEY('CADFile', "+str(filenum)+")").get()
     job.status = status
     job.put()
 

@@ -6,3 +6,6 @@ handlers:
    script: PCBOSSMain.py
 api_version: 1
 threadsafe: false
+libraries:
+ - name: pycrypto
+   version: latest

@@ -1,5 +1,6 @@
 import tornado.web
 import Database
+import Encryption
 
 """
 The PCBOSS printer system only has a single point of entry.
@@ -43,15 +44,6 @@ first_name = the users first name. Something has to be passed, even if it's a du
 last_name = the users last name. Something has to be passed, even if it's a dummy value.
 """
 
-authCode = "PCBOSS"
-addUserRequest = "add_user"
-listJobsRequest = "list_jobs"
-requestFileRequest = "request_file"
-updateJobStatusRequest = "update_job_status"
-recentFileRequest = "recent_file"
-recentFileTimestampRequest = "recent_file_timestamp"
-getUsersRequest = "get_users"
-editUsersRequest = "edit_user"
 
 class SystemRequestHandler(tornado.web.RequestHandler):
     def post(self):
@@ -62,7 +54,7 @@ class SystemRequestHandler(tornado.web.RequestHandler):
                 password = self.get_argument("password")
                 first_name = self.get_argument("first_name")
                 last_name = self.get_argument("last_name")
-                if Database.addUser(email, password, first_name, last_name):
+                if Database.addUser(email, Encryption.pwdHash(password), first_name, last_name):
                     self.write("Success")
                 else:
                     self.write("Failure")

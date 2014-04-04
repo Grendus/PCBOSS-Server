@@ -1,6 +1,7 @@
 import random
 import keys
 import Crypto.PublicKey.RSA
+import Crypto.Hash.SHA512
 import base64
 
 encryption_key = Crypto.PublicKey.RSA.importKey(keys.private_key)
@@ -8,7 +9,9 @@ decryption_key = Crypto.PublicKey.RSA.importKey(keys.public_key)
 
 def pwdHash(pwd):
     #todo: add hash function
-    return encryption_key.sign(pwd)
+    hasher = Crypto.Hash.SHA512.new()
+    hasher.update(pwd)
+    return hasher.hexdigest()
 
 def sessionToken():
     #todo: implement secure session ID generator

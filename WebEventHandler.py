@@ -1,4 +1,5 @@
 import Authentication
+import logging
 
 def getID(uname,pwd):
     return Authentication.authUser(uname,pwd)
@@ -12,7 +13,8 @@ def requestJobHistory(authToken):
 def saveFile(ID, CADFile, filedesc):
     try:
         Authentication.authUpload(ID, CADFile, filedesc)
-    except:
+    except Exception as e:
+        logging.error("Unable to save file: %s" % e)
         return False
     return True
 

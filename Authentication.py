@@ -34,7 +34,6 @@ def authViewRequest(token):
 def authUpload(ID, CADFile, filedesc):
     #todo: figure out how to authenticate the file
     encFile = CADFile
-    encFile[0]['body'] = Encryption.encryptFile(encFile[0]['body'])
     Database.storeFile(getUser(ID), encFile, filedesc)
 
 def getUser(token):

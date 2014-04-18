@@ -1,5 +1,6 @@
 import tornado.web
 import WebEventHandler
+import logging
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):

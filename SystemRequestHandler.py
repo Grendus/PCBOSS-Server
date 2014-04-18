@@ -47,40 +47,43 @@ last_name = the users last name. Something has to be passed, even if it's a dumm
 
 class SystemRequestHandler(tornado.web.RequestHandler):
     def post(self):
-        if self.get_argument("auth")=="PCBOSS":
-            requestType = self.get_argument("type")
+        key = self.get_argument("key")
+        data = self.get_argument("data")
+        request = decryptEntrance({"key":key, "data":data})
+        if request["auth"]=="PCBOSS":
+            requestType = request["type"]
             if requestType == "add_user":
-                email = self.get_argument("email")
+                email = request["email"]
                 password = self.get_argument("password")
-                first_name = self.get_argument("first_name")
-                last_name = self.get_argument("last_name")
+                first_name = request["first_name"]
+                last_name = request["last_name"]
                 if Database.addUser(email, Encryption.pwdHash(password), first_name, last_name):
-                    self.write("Success")
+                    self.write(Encryption.encryptEntrance("Success"))
                 else:
-                    self.write("Failure")
+                    self.write(Encryption.encryptEntrance("Failure"))
             elif requestType == "list_jobs":
-                self.write(str(Database.listJobs()))
+                self.write(str(Encryption.encryptEntrance(Database.listJobs())))
             elif requestType == "request_file":
-                filenum = self.get_argument("file_number")
-                self.write(str(Database.getJob(filenum)))
+                filenum = request["file_number"]
+                self.write(str(Encryption.encryptEntrance(Database.getJob(filenum))))
             elif requestType == "update_job_status":
-                filenum = int(self.get_argument("file_number"))
-                status = self.get_argument("status")
+                filenum = int(request["file_number"])
+                status = request["status"]
                 Database.updateStatus(filenum, status)
             elif requestType == "recent_file":
-                self.write(str(Database.mostRecentFile()))
+                self.write(str(Encryption.encryptEntrance(Database.mostRecentFile())))
             elif requestType == "recent_file_timestamp":
-                self.write(str(Database.mostRecentTimestamp()))
+                self.write(str(Encryption.encryptEntrance(Database.mostRecentTimestamp())))
             elif requestType == "get_users":
-                self.write(str(Database.listUsers()))
+                self.write(str(Encryption.encryptEntrance(Database.listUsers())))
             elif requestType == "edit_user":
-                email = self.get_argument("email")
-                fname = self.get_argument("first_name")
-                lname = self.get_argument("last_name")
-                pword = self.get_argument("password")
+                email = request["email"]
+                fname = request["first_name"]
+                lname = request["last_name"]
+                pword = request["password"]
                 Database.updateAccount(email, fname, lname, pword)
         else:
-            self.write("Error: Unrecognized Request")
+            self.write(Encryption.encryptEntrance("Error: Unrecognized Request"))
 
     def get(self):
         self.redirect("/")

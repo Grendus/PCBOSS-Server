@@ -17,7 +17,7 @@ class CADFile(ndb.Model):
     filename = ndb.StringProperty()
     time = ndb.DateTimeProperty(auto_now_add=True)
     description = ndb.TextProperty()
-    CADFile = ndb.BlobProperty()
+    CADFile = {"key":ndb.StringProperty, "data":ndb.BlobProperty()}
     status = ndb.StringProperty()
 
     def export(self):
@@ -60,7 +60,7 @@ def storeFile(ID, encFile, filedesc):
                            filename=encFile[0]['filename'],
                            description=filedesc,
                            status="Pending")
-    uploadedFile.CADFile = encFile[0]['body']
+    uploadedFile.CADFile = encryptEntrance[0]['body']
     uploadedFile.put()
 
 #adds a user to the system; should only be done by the home system

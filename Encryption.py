@@ -19,7 +19,7 @@ def pwdHash(pwd):
     return hasher.hexdigest()
 
 def sessionToken():
-    return str(Random.new().read(TOKEN_LENGTH))
+    return ''.join([str(random.randint(0,10)) for x in range(TOKEN_LENGTH)])
 
 """
 Messages can contain three different classes of value: dictionaries, lists, or values that 
@@ -29,7 +29,7 @@ while leaving the structure intact.
 def encryptEntrance(unencryptedFile):
 	key = Random.new().read(KEY_LENGTH)
 	encFile = encrypt(unencryptedFile, key)
-	return {"key":encryption_key.encrypt(key,None)[0], "file":encFile}
+	return {"key":encryption_key.encrypt(key,None)[0], "data":encFile}
 
 def encryptFile(unencryptedFile, key):
 	iv = Random.new().read(IV_LENGTH)
@@ -63,7 +63,7 @@ server and local system, just different keys.
 """
 def decryptEntrance(encryptedFile):
 	key = decryption_key.decrypt(encryptedFile["key"])
-	return decrypt(encryptedFile["file"], key)
+	return decrypt(encryptedFile["data"], key)
 
 def decryptFile(encryptedFile, key):
 	#generate an AES cipher using the initialization vector of the encrypted portion

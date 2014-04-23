@@ -20,7 +20,6 @@ class CADFile(ndb.Model):
     filename = ndb.StringProperty()
     time = ndb.DateTimeProperty(auto_now_add=True)
     description = ndb.TextProperty()
-    encKey = ndb.BlobProperty()
     CADFile = ndb.BlobProperty()
     status = ndb.StringProperty()
 
@@ -30,7 +29,7 @@ class CADFile(ndb.Model):
                 "key":str(self.key.id()),
                 "time":self.time.strftime("%Y %m %d %H:%M:%S"),
                 "description":self.description,
-                "CADFile":{"key":self.encKey, "data":self.CADFile},
+                "CADFile":CADFile,
                 "status":self.status}
         return data
     
@@ -65,12 +64,7 @@ def storeFile(ID, encFile, filedesc):
                            filename=encFile[0]['filename'],
                            description=filedesc,
                            status="Pending")
-    logging.info("encrypting file")
-    tempFile = Encryption.encryptEntrance(encFile[0]['body'])
-    logging.info("Putting encrypted data into file.")
-    uploadedFile.CADFile = base64.encodestring(tempFile["data"])
-    logging.info("Putting key into file")
-    uploadedFile.encKey = base64.encodestring(tempFile["key"])
+    uploadedFile.CADFile = base64.encodestring(encFile[0]['body'])
     logging.info("Storing encrypted file in database")
     uploadedFile.put()
 

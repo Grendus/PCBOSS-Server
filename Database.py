@@ -29,7 +29,7 @@ class CADFile(ndb.Model):
                 "key":str(self.key.id()),
                 "time":self.time.strftime("%Y %m %d %H:%M:%S"),
                 "description":self.description,
-                "CADFile":CADFile,
+                "CADFile":self.CADFile,
                 "status":self.status}
         return data
     
@@ -64,7 +64,7 @@ def storeFile(ID, encFile, filedesc):
                            filename=encFile[0]['filename'],
                            description=filedesc,
                            status="Pending")
-    uploadedFile.CADFile = base64.encodestring(encFile[0]['body'])
+    uploadedFile.CADFile = encFile[0]['body']
     logging.info("Storing encrypted file in database")
     uploadedFile.put()
 

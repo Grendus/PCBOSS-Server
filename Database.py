@@ -1,7 +1,10 @@
 from google.appengine.ext import ndb
+import Mail
 import logging
 import Encryption
 import base64
+
+COMPLETE = "Finished"
 
 class user(ndb.Model):
     email_address = ndb.StringProperty()
@@ -105,6 +108,8 @@ def getJob(filenum):
 def updateStatus(filenum, status):
     job = CADFile.gql("WHERE __key__ = KEY('CADFile', "+str(filenum)+")").get()
     job.status = status
+    if status == COMPLETE:
+        mail.sendComplete(job.export())
     job.put()
 
 def mostRecentFile():
